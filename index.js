@@ -88,7 +88,7 @@ d3.text('20.gpx', function(str) {
     // Here we use [chroniton](http://github.com/tmcw/chroniton) to navigate
     // through time.
 
-     var sWidth = 700;
+     var sWidth = 660; //700 - 20 - 20
     var slider = chroniton()
       .domain(timeDomain)
       // A custom label format shows time elapsed since the beginning of the
@@ -112,8 +112,8 @@ d3.text('20.gpx', function(str) {
     });
 
     var margin = {};
-    margin.right = 10;
-    margin.left = 10;
+    margin.right = 20;
+    margin.left = 20;
     margin.bottom = 0;
     margin.top = 20;
 
@@ -139,7 +139,7 @@ d3.text('20.gpx', function(str) {
         .y1(function(d) { return elevation(d[1][2]); });
 
     // Create the SVG element and group within it where the charts will live.
-    var svg = d3.select('body').append('svg')
+    var svg = d3.select('.container').append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -174,7 +174,7 @@ d3.text('20.gpx', function(str) {
     });
 
     // Append the slider element to the page.
-    d3.select(document.body)
+    d3.select('.container')
         .append('div')
         .call(slider);
 });
