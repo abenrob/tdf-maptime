@@ -48,15 +48,6 @@ d3.text('20.gpx', function(str) {
         getter = function(n) { return function(_) { return _[n]; }; },
         getDate = getter(0),
         getEl = getter(2),
-        // Create a general scale that takes heart rate data. We'll use
-        // this to derive colors for the map and positions for the line chart.
-        elScale = d3.scale.linear()
-            .domain(d3.extent(datePlaceEl, getEl)),
-        // Create a specific version of that scale that maps heart
-        // rate to color
-        helColor = elScale.copy()
-            .range(['red', 'green'])
-            .interpolate(d3.interpolateRgb),
         // Create a bisector function that helps us go from a place
         // on the chroniton slider to a place in time.
         bisectPlace = d3.bisector(function(d) { return d[0]; }).left,
@@ -115,7 +106,9 @@ d3.text('20.gpx', function(str) {
           var datum = datePlaceEl[bisectPlace(datePlaceEl, d)];
           var ll = L.latLng(datum[1][1], datum[1][0]);
           hereMarker.setLatLng(ll);
-          map.panTo(ll, {animate: false});
+          if (d !== timeDomain[0]){
+            map.setView(ll, initZoom > 12 ? initZoom : 13, {animate: false});
+          }
     });
 
     var margin = {};
