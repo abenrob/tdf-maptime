@@ -2,7 +2,7 @@
 
 forked and modified from https://github.com/mapbox/running-map-example
 
-## [Annotated Documentation](https://www.mapbox.com/running-map-example/docs/)
+## [Annotated Documentation](https://www.abenrob.com/tdf-maptime/docs/)
 
 This is pulled together using [browserify](http://browserify.org/):
 the libraries it depends on are tracked in the [package.json](package.json)
