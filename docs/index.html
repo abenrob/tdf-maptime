@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>index.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>index.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p><a href="https://github.com/mapbox/togeojson">toGeoJSON</a> transforms
+GPX files into <a href="http://geojson.org/">GeoJSON</a>,
+readable by <a href="https://www.mapbox.com/mapbox.js/">Mapbox.js</a> and other
+open source tools.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> gpx2geojson = <span class="hljs-built_in">require</span>(<span class="hljs-string">'togeojson'</span>).gpx;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><a href="http://github.com/tmcw/chroniton">Chroniton</a> gives us a time slider for time-based data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> chroniton = <span class="hljs-built_in">require</span>(<span class="hljs-string">'chroniton'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><a href="http://d3js.org/">d3</a> draws the graphs that go alongside the map,
+for elevation and heart rate</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> d3 = <span class="hljs-built_in">require</span>(<span class="hljs-string">'d3'</span>);
+
+L.mapbox.accessToken = <span class="hljs-string">'pk.eyJ1IjoiYWJlbnJvYiIsImEiOiJEYmh3WWNJIn0.fus8CLBKPBHDvSxiayhJyg'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Load the GPX file with d3’s xml method. This could also use <a href="http://jquery.com/">jQuery</a>
+for AJAX or any other library that supports loading XML with XMLHttpRequest.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>d3.text(<span class="hljs-string">'20.gpx'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">str</span>) </span>{
+
+    <span class="hljs-keyword">var</span> dom = (<span class="hljs-keyword">new</span> DOMParser()).parseFromString(str, <span class="hljs-string">'text/xml'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h1 id="data-conversion">Data Conversion</h1>
+<p>Convert the GPX file to GeoJSON using toGeoJSON</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> geojson = gpx2geojson(dom);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>get short segments with properties
+var segments = geojsonSegment(geojson);</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>prop up our initial map, using tiles from <a href="https://www.mapbox.com/">Mapbox</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> map = L.mapbox.map(d3.select(<span class="hljs-string">'.container'</span>)
+        .append(<span class="hljs-string">'div'</span>)
+        .attr(<span class="hljs-string">'id'</span>, <span class="hljs-string">'map'</span>)
+        .node(), <span class="hljs-string">'abenrob.ml33j7da'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Create shortcuts to properties and coordinates as <code>props</code> and
+<code>coords</code>, and then resolve focused arrays of dates versus
+places and heart rates</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> props = geojson.features[<span class="hljs-number">0</span>].properties,
+        coords = geojson.features[<span class="hljs-number">0</span>].geometry.coordinates,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Create an array of <code>[date, position, heart rate]</code> that
+we will use to power charts and interactions.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        datePlaceEl = props.coordTimes.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d, i</span>) </span>{
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(d), coords[i], coords[i][<span class="hljs-number">2</span>]];
+        }),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Create a generalized getter creator: this is a function
+that takes an key and returns a function that gets
+that key from a given object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        getter = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n</span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">_</span>) </span>{ <span class="hljs-keyword">return</span> _[n]; }; },
+        getDate = getter(<span class="hljs-number">0</span>),
+        getEl = getter(<span class="hljs-number">2</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Create a general scale that takes heart rate data. We’ll use
+this to derive colors for the map and positions for the line chart.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        elScale = d3.scale.linear()
+            .domain(d3.extent(datePlaceEl, getEl)),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Create a specific version of that scale that maps heart
+rate to color</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        helColor = elScale.copy()
+            .range([<span class="hljs-string">'red'</span>, <span class="hljs-string">'green'</span>])
+            .interpolate(d3.interpolateRgb),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Create a bisector function that helps us go from a place
+on the chroniton slider to a place in time.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        bisectPlace = d3.bisector(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{ <span class="hljs-keyword">return</span> d[<span class="hljs-number">0</span>]; }).left,
+        timeDomain = d3.extent(datePlaceEl, getDate);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h1 id="adding-map-layers">Adding Map Layers</h1>
+<p>First: add a white casing layer that surrounds the path and makes
+it easier to differntiate from the surrounding map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> casingLayer = L.geoJson(geojson, {
+        style: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> { weight: <span class="hljs-number">5</span>, color: <span class="hljs-string">'#fff'</span>, opacity: <span class="hljs-number">1</span> }; }
+    }).addTo(map);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>And then add the run layer. This is a layer of short LineString
+segments, and we color each one its own special hue by using the
+<code>heartRateColor</code> scale we created before.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> tdfLayer = L.geoJson(geojson, {
+        style: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">feature</span>) </span>{
+            <span class="hljs-keyword">return</span> {
+                weight: <span class="hljs-number">2</span>,
+                opacity: <span class="hljs-number">1</span>,
+                color: <span class="hljs-string">'#000000'</span>
+            };
+        }
+    }).addTo(map);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>A marker that follows the runner’s position when the time changes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> hereMarker = L.circleMarker(L.latLng(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), {
+        color: <span class="hljs-string">'black'</span>, weight: .<span class="hljs-number">5</span>, opacity: <span class="hljs-number">1</span>,
+        fillColor: <span class="hljs-string">'yellow'</span>, fillOpacity: <span class="hljs-number">1</span>, radius: <span class="hljs-number">5</span>
+    }).addTo(map);
+
+    map.fitBounds(tdfLayer.getBounds());
+    <span class="hljs-keyword">var</span> initZoom = map.getZoom();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <h1 id="the-slider">The Slider</h1>
+<p>Here we use <a href="http://github.com/tmcw/chroniton">chroniton</a> to navigate
+through time.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+     <span class="hljs-keyword">var</span> sWidth = <span class="hljs-number">700</span>;
+    <span class="hljs-keyword">var</span> slider = chroniton()
+      .domain(timeDomain)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>A custom label format shows time elapsed since the beginning of the
+run (<code>timeDomain[0]</code>) rather than absolute time.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      .labelFormat(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{
+          <span class="hljs-keyword">return</span> d3.time.format(<span class="hljs-string">'%M:%S'</span>)(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(+d - timeDomain[<span class="hljs-number">0</span>]));
+      })
+      .width(sWidth)
+      .playButton(<span class="hljs-literal">true</span>)
+      .playbackRate(.<span class="hljs-number">1</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>When the slider moves, use d3.bisect to find the right place
+for the map’s location indicator to move as well.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    slider.on(<span class="hljs-string">'change.place'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{
+          <span class="hljs-keyword">var</span> datum = datePlaceEl[bisectPlace(datePlaceEl, d)];
+          <span class="hljs-keyword">var</span> ll = L.latLng(datum[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], datum[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]);
+          hereMarker.setLatLng(ll);
+          map.panTo(ll, {animate: <span class="hljs-literal">false</span>});
+    });
+
+    <span class="hljs-keyword">var</span> margin = {};
+    margin.right = <span class="hljs-number">10</span>;
+    margin.left = <span class="hljs-number">10</span>;
+    margin.bottom = <span class="hljs-number">0</span>;
+    margin.top = <span class="hljs-number">20</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Use the slider’s width, scale, and margins to position the area graph for elevation 
+in the right position and sync them to user input.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> height = <span class="hljs-number">80</span>;
+    <span class="hljs-keyword">var</span> width = sWidth - margin.left - margin.right;
+    <span class="hljs-keyword">var</span> x = d3.scale.linear()
+        .domain(timeDomain)
+        .range([<span class="hljs-number">0</span>, width]);
+    <span class="hljs-keyword">var</span> elevation = d3.scale.linear()
+        .range([height, <span class="hljs-number">0</span>])
+        .domain([<span class="hljs-number">0</span>, d3.max(datePlaceEl, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{
+            <span class="hljs-keyword">return</span> d[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>];
+        })]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Create an area generator for elevation.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> elevationLine = d3.svg.area()
+        .x(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{ 
+            <span class="hljs-keyword">return</span> x(d[<span class="hljs-number">0</span>]); 
+        })
+        .y0(height)
+        .y1(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{ <span class="hljs-keyword">return</span> elevation(d[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>]); });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Create the SVG element and group within it where the charts will live.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> svg = d3.select(<span class="hljs-string">'body'</span>).append(<span class="hljs-string">'svg'</span>)
+        .attr(<span class="hljs-string">'width'</span>, width + margin.left + margin.right)
+        .attr(<span class="hljs-string">'height'</span>, height + margin.top + margin.bottom)
+      .append(<span class="hljs-string">'g'</span>)
+        .attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'chart'</span>)
+        .attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Append the paths for the elevation and area charts, within the
+same element, as well as the label and connector that displays
+the current elevation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    svg.append(<span class="hljs-string">'path'</span>)
+        .datum(datePlaceEl)
+        .attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'elevation-area'</span>)
+        .attr(<span class="hljs-string">'d'</span>, elevationLine);
+
+    <span class="hljs-keyword">var</span> label = svg.append(<span class="hljs-string">'text'</span>)
+        .attr(<span class="hljs-string">'text-anchor'</span>, <span class="hljs-string">'middle'</span>);
+
+    <span class="hljs-keyword">var</span> connector = svg.append(<span class="hljs-string">'rect'</span>)
+        .attr(<span class="hljs-string">'width'</span>, <span class="hljs-number">1</span>)
+        .attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'elevation-indicator'</span>)
+        .attr(<span class="hljs-string">'height'</span>, height);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Hove the label and indicator line on the charts whenever
+the slider moves.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    slider.on(<span class="hljs-string">'change.el'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{
+        <span class="hljs-keyword">var</span> datum = datePlaceEl[bisectPlace(datePlaceEl, d)];
+        label
+            .attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + [x(d), -<span class="hljs-number">5</span>] + <span class="hljs-string">')'</span>)
+            .text(<span class="hljs-built_in">Math</span>.round(getEl(datum)) + <span class="hljs-string">' m'</span>);
+        connector
+            .attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + [x(d) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>] + <span class="hljs-string">')'</span>);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Append the slider element to the page.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    d3.select(<span class="hljs-built_in">document</span>.body)
+        .append(<span class="hljs-string">'div'</span>)
+        .call(slider);
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
