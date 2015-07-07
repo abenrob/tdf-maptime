@@ -13,6 +13,8 @@ var d3 = require('d3');
 
 L.mapbox.accessToken = 'pk.eyJ1IjoiYWJlbnJvYiIsImEiOiJEYmh3WWNJIn0.fus8CLBKPBHDvSxiayhJyg';
 
+
+// GPX lookup array
 var stages = ["MapMyTrack-Route-Tour-de-Force-2015Stage-01UtrechtPrologue.gpx",
 "MapMyTrack-Route-Tour-de-Force-2015Stage-02Utrecht-Zeland.gpx",
 "MapMyTrack-Route-Tour-de-Force-2015Stage-03Anvers-Huy-.gpx",
