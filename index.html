@@ -25,24 +25,46 @@ pre {
 h3 {
     border-bottom: 1px solid #aaa;
 }
-
+.stage {
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+.container {
+  position: relative;
+}
+.control-down {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+.control-up {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
 .theme-example .x.axis .domain {
-    stroke: lightblue;
+  stroke: lightblue;
 }
 
 .theme-example text {
-    font-family: serif;
+  font-family: serif;
 }
 
 .area {
-    fill: steelblue;
+  fill: steelblue;
 }
 
 circle.marker {
-    fill: darkblue;
+  fill: darkblue;
 }
 #map {
-    height: 400px;
+  clear:both;
+  height: 400px;
 }
 
 
@@ -53,6 +75,7 @@ circle.marker {
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 </head>
 <body>
+<div class="stage"></div>
 <div class="container"></div>
 <script src='bundle.js'></script>
 </body>

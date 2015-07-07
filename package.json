@@ -14,7 +14,8 @@
     "chroniton": "^1.1.0",
     "docco": "^0.6.3",
     "d3": "^3.5.3",
-    "togeojson": "^0.10.1"
+    "togeojson": "^0.10.1",
+    "geojson-length": "^0.1.1"
   },
   "repository": {
     "type": "git",
