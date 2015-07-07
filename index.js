@@ -77,9 +77,6 @@ function buildPage(stage){
         // Convert the GPX file to GeoJSON using toGeoJSON
         var geojson = gpx2geojson(dom);     
 
-        // get short segments with properties
-        //var segments = geojsonSegment(geojson);
-
         // prop up our initial map, using tiles from [Mapbox](https://www.mapbox.com/)
         var map = L.mapbox.map(d3.select('.container')
             .append('div')
