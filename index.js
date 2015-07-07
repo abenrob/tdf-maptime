@@ -1,3 +1,5 @@
+// # Tour de France visualization
+
 // [toGeoJSON](https://github.com/mapbox/togeojson) transforms
 // GPX files into [GeoJSON](http://geojson.org/),
 // readable by [Mapbox.js](https://www.mapbox.com/mapbox.js/) and other
@@ -113,9 +115,7 @@ function buildPage(stage){
             style: function() { return { weight: 5, color: '#fff', opacity: 1 }; }
         }).addTo(map);
 
-        // And then add the run layer. This is a layer of short LineString
-        // segments, and we color each one its own special hue by using the
-        // `heartRateColor` scale we created before.
+        // And then add the route layer
         var tdfLayer = L.geoJson(geojson, {
             style: function(feature) {
                 return {
@@ -126,7 +126,7 @@ function buildPage(stage){
             }
         }).addTo(map);
 
-        // A marker that follows the runner's position when the time changes
+        // A marker that follows the route position when the time changes
         var hereMarker = L.circleMarker(L.latLng(0, 0), {
             color: 'black', weight: .5, opacity: 1,
             fillColor: 'yellow', fillOpacity: 1, radius: 5
@@ -144,13 +144,11 @@ function buildPage(stage){
         var slider = chroniton()
           .domain(timeDomain)
           // A custom label format shows time elapsed since the beginning of the
-          // run (`timeDomain[0]`) rather than absolute time.
+          // visualization (`timeDomain[0]`) rather than absolute time.
           .labelFormat(function(d) {
               return d3.time.format('%M:%S')(new Date(+d - timeDomain[0]));
           })
           .width(sWidth);
-          // .playButton(true)
-          // .playbackRate(rate);
 
         // When the slider moves, use d3.bisect to find the right place
         // for the map's location indicator to move as well.

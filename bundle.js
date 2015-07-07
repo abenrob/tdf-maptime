@@ -1,4 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// # Tour de France visualization
+
 // [toGeoJSON](https://github.com/mapbox/togeojson) transforms
 // GPX files into [GeoJSON](http://geojson.org/),
 // readable by [Mapbox.js](https://www.mapbox.com/mapbox.js/) and other
@@ -78,9 +80,6 @@ function buildPage(stage){
         // Convert the GPX file to GeoJSON using toGeoJSON
         var geojson = gpx2geojson(dom);     
 
-        // get short segments with properties
-        //var segments = geojsonSegment(geojson);
-
         // prop up our initial map, using tiles from [Mapbox](https://www.mapbox.com/)
         var map = L.mapbox.map(d3.select('.container')
             .append('div')
@@ -117,9 +116,7 @@ function buildPage(stage){
             style: function() { return { weight: 5, color: '#fff', opacity: 1 }; }
         }).addTo(map);
 
-        // And then add the run layer. This is a layer of short LineString
-        // segments, and we color each one its own special hue by using the
-        // `heartRateColor` scale we created before.
+        // And then add the route layer
         var tdfLayer = L.geoJson(geojson, {
             style: function(feature) {
                 return {
@@ -130,7 +127,7 @@ function buildPage(stage){
             }
         }).addTo(map);
 
-        // A marker that follows the runner's position when the time changes
+        // A marker that follows the route position when the time changes
         var hereMarker = L.circleMarker(L.latLng(0, 0), {
             color: 'black', weight: .5, opacity: 1,
             fillColor: 'yellow', fillOpacity: 1, radius: 5
@@ -148,13 +145,11 @@ function buildPage(stage){
         var slider = chroniton()
           .domain(timeDomain)
           // A custom label format shows time elapsed since the beginning of the
-          // run (`timeDomain[0]`) rather than absolute time.
+          // visualization (`timeDomain[0]`) rather than absolute time.
           .labelFormat(function(d) {
               return d3.time.format('%M:%S')(new Date(+d - timeDomain[0]));
           })
           .width(sWidth);
-          // .playButton(true)
-          // .playbackRate(rate);
 
         // When the slider moves, use d3.bisect to find the right place
         // for the map's location indicator to move as well.
