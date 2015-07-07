@@ -90,7 +90,7 @@ function buildPage(stage){
         // places and heart rates
         var props = geojson.features[0].properties,
             coords = geojson.features[0].geometry.coordinates,
-            // Create an array of `[date, position, heart rate]` that
+            // Create an array of `[date, position, elevation]` that
             // we will use to power charts and interactions.
             datePlaceEl = props.coordTimes.map(function(d, i) {
                 return [new Date(d), coords[i], coords[i][2]];
