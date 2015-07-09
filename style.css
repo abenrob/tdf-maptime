@@ -1,3 +1,68 @@
+body {
+  width: 700px;
+  margin: auto;
+  font-family: sans-serif;
+  overflow: hidden;
+  background: url(http://subtlepatterns.com/patterns/brickwall.png);
+}
+.container {
+  padding: 20px;
+  height: 2000px;
+  border-right: 1px solid rgb(151, 151, 151);
+  border-left: 1px solid rgb(151, 151, 151);
+  box-shadow: -5px -5px 15px -5px rgb(151, 151, 151), 5px -5px 15px -5px rgb(151, 151, 151);
+  background-color: rgb(255, 255, 255);
+}
+pre {
+    font-size: 20px;
+}
+h3 {
+    border-bottom: 1px solid #aaa;
+}
+.stage {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #F2BB00;
+  color: #FFF;
+}
+.container {
+  position: relative;
+}
+.stage-control {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  font-weight: bold;
+  font-size: 26px;
+  line-height: 30px;
+  color: #FFF;
+}
+.control-down {
+  left: 30px;
+}
+.control-up {
+  right: 30px;
+}
+.theme-example .x.axis .domain {
+  stroke: lightblue;
+}
+.theme-example text {
+  font-family: serif;
+}
+.area {
+  fill: steelblue;
+}
+circle.marker {
+  fill: darkblue;
+}
+#map {
+  clear:both;
+  height: 400px;
+}
 .chroniton {
   font: 10px sans-serif;
   outline:none;
@@ -48,21 +113,18 @@
   cursor: -webkit-grabbing;
 }
 .slider.brushing .handle {
-  fill: #eee;
+  fill: #F2BB00;
 }
 .label {
   font:bold 12px sans-serif;
 }
-
 .elevation-area {
-    fill:#000;
-    opacity:0.3;
+    fill: #F2BB00;
+    opacity:1;
 }
-
 .elevation-indicator {
     fill:black;
 }
-
 .chart text {
     font-size:10px;
 }

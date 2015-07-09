@@ -17,27 +17,27 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWJlbnJvYiIsImEiOiJEYmh3WWNJIn0.fus8CLBKPBHDv
 
 
 // GPX lookup array
-var stages = ["MapMyTrack-Route-Tour-de-Force-2015Stage-01UtrechtPrologue.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-02Utrecht-Zeland.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-03Anvers-Huy-.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-04Seraing-Cambrai.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-05Arras-Amiens.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-06Abbeville-Le-Harve.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-07Livarot-Fougeres.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-08Rennes-MurdeBretagne.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-09Vannes-Plumelec.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-10Tarbes-LaPierreSaintMartin.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-11Pau-Cauterets.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-12Lannemezan-Plateau-de-Beille.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-13Muret-Rodez.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-14Rodez-Mende.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-15Mende-Valence.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-16BourgdePeage-Gap.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-17DignelesBains-Pra-Loup.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-18Gap-SaintJeandeMaurienne.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-19SaintJeandeMaurienne-La-Toussuire.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-20Modane-Valfrejus-Alpe-dHuez.gpx",
-"MapMyTrack-Route-Tour-de-Force-2015Stage-21Sevres-ParisChampsElysees.gpx"]
+var stages = ["gpx/MapMyTrack-Route-Stage-1-Utrecht.gpx",
+    "gpx/MapMyTrack-Route-Stage-2-Utrecht---Zélande.gpx",
+    "gpx/MapMyTrack-Route-Stage-3-Anvers---Huy.gpx",
+    "gpx/MapMyTrack-Route-Stage-4-Seraing---Cambrai.gpx",
+    "gpx/MapMyTrack-Route-Stage-5-Arras---Amiens-Métropole.gpx",
+    "gpx/MapMyTrack-Route-Stage-6-Abbeville---Le-Havre.gpx",
+    "gpx/MapMyTrack-Route-Stage-7-Livarot---Fougères.gpx",
+    "gpx/MapMyTrack-Route-Stage-8-Rennes---Mûr-de-Bretagne.gpx",
+    "gpx/MapMyTrack-Route-Stage-9-Vannes---Plumelec.gpx",
+    "gpx/MapMyTrack-Route-Stage-10-Tarbes---La-PierreSaintMartin.gpx",
+    "gpx/MapMyTrack-Route-Stage-11-Pau---Cauterets--Vallée-de-SaintSavin.gpx",
+    "gpx/MapMyTrack-Route-Stage-12-Lannemezan---Plateau-de-Beille.gpx",
+    "gpx/MapMyTrack-Route-Stage-13-Muret---Rodez.gpx",
+    "gpx/MapMyTrack-Route-Stage-14-Rodez---Mende.gpx",
+    "gpx/MapMyTrack-Route-Stage-15-Mende---Valence.gpx",
+    "gpx/MapMyTrack-Route-Stage-16-BourgdePéage---Gap.gpx",
+    "gpx/MapMyTrack-Route-Stage-17-DignelesBains---PraLoup.gpx",
+    "gpx/MapMyTrack-Route-Stage-18-Gap---SaintJeandeMaurienne.gpx",
+    "gpx/MapMyTrack-Route-Stage-19-SaintJeandeMaurienne---La-Toussuire--Les-Sybelles.gpx",
+    "gpx/MapMyTrack-Route-Stage-20-Modane-Valfréjus---AlpedHuez.gpx",
+    "gpx/MapMyTrack-Route-Stage-21-Sèvres--Grand-Paris-Seine-Ouest---Paris-ChampsÉlysées.gpx"]
 
 // resuseable function so we can re-call for each stage
 function buildPage(stage){
@@ -49,13 +49,13 @@ function buildPage(stage){
     d3.select('.container')
         .append('div')
         .attr('class','stage')
-        .text('Stage '+stage);
+        .text('TDF 2015 Stage '+stage);
 
     // add the down botton
     d3.select('.container')
         .append('div')
-        .attr('class','control-down')
-        .text("down")
+        .attr('class','stage-control control-down')
+        .text('❮')
         .on("click", function(){
             changeStage('down')
         });
@@ -63,15 +63,14 @@ function buildPage(stage){
     // add the up botton
     d3.select('.container')
         .append('div')
-        .attr('class','control-up')
-        .text("up")
+        .attr('class','stage-control control-up')
+        .text('❯')
         .on("click", function(){
             changeStage('up')
         });
 
     // Load the GPX file with d3's xml method.
-    var urlRoot = 'https://raw.githubusercontent.com/MaptimeAlpes/tour-de-france-2015/master/data/gpx/';
-    d3.text(urlRoot+stages[stage-1], function(str) {
+    d3.text(stages[stage-1], function(str) {
 
         var dom = (new DOMParser()).parseFromString(str, 'text/xml');
         // # Data Conversion
@@ -112,7 +111,7 @@ function buildPage(stage){
         // First: add a white casing layer that surrounds the path and makes
         // it easier to differntiate from the surrounding map
         var casingLayer = L.geoJson(geojson, {
-            style: function() { return { weight: 5, color: '#fff', opacity: 1 }; }
+            style: function() { return { weight: 6, color: '#F2BB00', opacity: 1 }; }
         }).addTo(map);
 
         // And then add the route layer
@@ -128,8 +127,8 @@ function buildPage(stage){
 
         // A marker that follows the route position when the time changes
         var hereMarker = L.circleMarker(L.latLng(0, 0), {
-            color: 'black', weight: .5, opacity: 1,
-            fillColor: 'yellow', fillOpacity: 1, radius: 5
+            color: '#000000', weight: 1, opacity: 1,
+            fillColor: '#F2BB00', fillOpacity: 1, radius: 6
         }).addTo(map);
 
         map.fitBounds(tdfLayer.getBounds());
@@ -176,9 +175,7 @@ function buildPage(stage){
             .range([0, width]);
         var elevation = d3.scale.linear()
             .range([height, 0])
-            .domain([0, d3.max(datePlaceEl, function(d) {
-                return d[1][2];
-            })]);
+            .domain([-10, 2620]);
 
         // Create an area generator for elevation.
         var elevationLine = d3.svg.area()
@@ -230,7 +227,7 @@ function buildPage(stage){
     })
 }
 
-
+// get the next stage up or down, or loop around it more/less than max/min
 var changeStage = function(upordown){
     var targetStage;
     var currentStage = parseInt(hashStage);

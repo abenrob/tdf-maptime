@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:mapbox/abenrob/tdf-maptime.git"
+    "url": "git@github.com:abenrob/tdf-maptime.git"
   },
   "devDependencies": {
     "brfs": "^1.2.0",
