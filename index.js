@@ -13,9 +13,6 @@ var chroniton = require('chroniton');
 // for elevation and heart rate
 var d3 = require('d3');
 
-L.mapbox.accessToken = 'pk.eyJ1IjoiYWJlbnJvYiIsImEiOiJEYmh3WWNJIn0.fus8CLBKPBHDvSxiayhJyg';
-
-
 // GPX lookup array
 var stages = ["gpx/MapMyTrack-Route-Stage-1-Utrecht.gpx",
     "gpx/MapMyTrack-Route-Stage-2-Utrecht---Zélande.gpx",
@@ -79,10 +76,18 @@ function buildPage(stage){
         var geojson = gpx2geojson(dom);     
 
         // prop up our initial map, using tiles from [Mapbox](https://www.mapbox.com/)
-        var map = L.mapbox.map(d3.select('.container')
+        var map = L.map(d3.select('.container')
             .append('div')
             .attr('id', 'map')
-            .node(), 'abenrob.ml33j7da');
+            .node());
+        
+        var style = L.tileLayer('https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=keHJDi23HGgsOdlD2TBI',{
+            tileSize: 512,
+            zoomOffset: -1,
+            minZoom: 1,
+            attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+            crossOrigin: true
+          }).addTo(map);
 
         // Create shortcuts to properties and coordinates as `props` and
         // `coords`, and then resolve focused arrays of dates versus

@@ -1,11 +1,24 @@
 body {
-  width: 700px;
   margin: auto;
   font-family: sans-serif;
   overflow: hidden;
-  background: url(http://subtlepatterns.com/patterns/brickwall.png);
+}
+.background-image {
+  background: url(images/howard-bouchevereau-cOfR4XmEzd8-unsplash.jpg) no-repeat center center fixed; 
+  background-size: cover;
+  display: block;
+  filter: blur(2px) brightness(0.65) sepia(.5) opacity(.9);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 1;
 }
 .container {
+  width: 700px;
+  margin: auto;
+  z-index: 2;
   padding: 20px;
   height: 2000px;
   border-right: 1px solid rgb(151, 151, 151);
