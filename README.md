@@ -1,6 +1,6 @@
 # tdf-maptime
 
-## [Live Site](http://www.abenrob.com/tdf-maptime/)
+## [Live Site](http://abenrob.github.io/tdf-maptime/)
 
 forked and modified from https://github.com/mapbox/running-map-example
 
